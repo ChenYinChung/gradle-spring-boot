@@ -1,0 +1,12 @@
+/.idea
+
+*.iml
+/spring-boot-test/build
+build
+/spring-boot-test/.gradle
+/.gradle
+
+.idea/
+/build/
+/classes/
+out
