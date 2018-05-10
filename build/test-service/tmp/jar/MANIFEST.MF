@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Implementation-Title: test-service
-Implementation-Version: 1.0-SNAPSHOT
-Created-By: 10.0.1 (Oracle Corporation)
-Built-With: gradle-4.7, groovy-2.4.12
-Built-By: sammy
-Built-On: Sammyde-MBP.Home/192.168.1.104
-Build-Time: 2018-05-10T19:30:46.165776Z
-
