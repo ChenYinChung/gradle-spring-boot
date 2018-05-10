@@ -1,0 +1,52 @@
+import java.time.Instant
+
+defaultTasks 'clean', 'build'
+
+subprojects {
+    apply plugin: 'java'
+
+    sourceCompatibility = JavaVersion.VERSION_1_10
+    targetCompatibility = JavaVersion.VERSION_1_10
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+        options.deprecation = true
+        options.compilerArgs += ['-Xlint:all', '-proc:none']
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    buildDir = "${rootDir}/build/${name}"
+
+//    test {
+//        useJUnitPlatform()
+//        failFast = true
+//    }
+
+    afterEvaluate {
+        tasks.withType(Jar) {
+            manifest {
+                attributes 'Implementation-Title': project.name,
+                        'Implementation-Version': project.version,
+                        'Created-By': "${System.getProperty('java.version')} (${System.getProperty('java.vendor')})",
+                        'Built-With': "gradle-${project.gradle.gradleVersion}, groovy-${GroovySystem.version}",
+                        'Built-By': System.getProperty('user.name'),
+                        'Built-On': "${InetAddress.localHost.hostName}/${InetAddress.localHost.hostAddress}",
+                        'Build-Time': Instant.now().toString()
+            }
+        }
+    }
+}
+
+//apply from: file("${rootDir}/gradle/check.gradle")
+
+allprojects {
+    apply plugin: 'idea'
+    idea.module.inheritOutputDirs = true
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '4.7'
+}
