@@ -17,17 +17,15 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value="/add/{name}/{age}",method = RequestMethod.GET)
-    public String addUser(@PathVariable("name") String name,@PathVariable("age") int age){
-        logger.info("add {} , {}", name,age);
-        for(int i=1 ; i< 50; i++) {
-            try {
-                userService.addUser(name, age+i);
-            } catch (Exception e) {
-                logger.error("error",e);
+    @RequestMapping(value = "/add/{name}/{age}", method = RequestMethod.GET)
+    public String addUser(@PathVariable("name") String name, @PathVariable("age") int age) {
+        logger.info("add {} , {}", name, age);
+        try {
+            userService.addUser(name, age);
+        } catch (Exception e) {
+            logger.error("error", e);
 
-               return "Not OK";
-            }
+            return "Not OK";
         }
         return "OK";
     }

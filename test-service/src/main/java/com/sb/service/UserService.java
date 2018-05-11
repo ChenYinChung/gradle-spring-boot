@@ -14,16 +14,12 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-
-    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
-    public void addUser(String name, int age) throws Exception{
-
-        if(age > 90){
-            throw new Exception("Too old");
-        }
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void addUser(String name, int age) throws Exception {
+        var user = new User(name, age);
         try {
-            userRepository.save(new User(name+age, age));
-        }catch(Exception e){
+            userRepository.save(user);
+        } catch (Exception e) {
             throw e;
         }
     }
