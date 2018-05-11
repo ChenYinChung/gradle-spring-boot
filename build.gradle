@@ -46,7 +46,7 @@ configure(subprojects.findAll { it.name.endsWith('-service') }) {
         compile "org.hibernate:hibernate-entitymanager:5.3.0.CR2"
         compile "javax.xml.bind:jaxb-api:2.3.0"
 
-//        compile "org.springframework.boot:spring-boot-starter-data-elasticsearch:2.0.2.RELEASE"
+        compile "org.springframework.boot:spring-boot-starter-data-elasticsearch:2.0.2.RELEASE"
 
 
     }

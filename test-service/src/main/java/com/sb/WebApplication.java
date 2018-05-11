@@ -10,7 +10,8 @@ import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
 @ComponentScan(basePackages = { "com.sb" })
-@PropertySource({"classpath:application.properties","classpath:kafka.properties","classpath:undertow.properties","classpath:jdbc.properties"})
+@PropertySource({"classpath:application.properties","classpath:kafka.properties","classpath:undertow.properties",
+        "classpath:jdbc.properties","es.properties"})
 
 //@EnableAutoConfiguration
 public class WebApplication {

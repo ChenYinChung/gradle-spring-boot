@@ -17,6 +17,12 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    /**
+     * http://localhost:8080/user/add/sammy/40
+     * @param name
+     * @param age
+     * @return
+     */
     @RequestMapping(value = "/add/{name}/{age}", method = RequestMethod.GET)
     public String addUser(@PathVariable("name") String name, @PathVariable("age") int age) {
         logger.info("add {} , {}", name, age);
