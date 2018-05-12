@@ -4,6 +4,9 @@ defaultTasks 'clean', 'build'
 
 subprojects {
     apply plugin: 'java'
+    apply plugin: 'application'
+
+    mainClassName = "com.sb.WebApplication"
 
     sourceCompatibility = JavaVersion.VERSION_1_10
     targetCompatibility = JavaVersion.VERSION_1_10
