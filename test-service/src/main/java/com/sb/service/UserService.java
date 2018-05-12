@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -20,6 +21,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void addUser(String name, int age) throws Exception {
         var user = new User(name, age);
@@ -28,5 +30,17 @@ public class UserService {
         } catch (Exception e) {
             throw e;
         }
+    }
+
+    /**
+     * find by redis cache
+     *
+     * @param name
+     * @return
+     */
+    public Optional<User> findUser(String name) {
+        Optional<User> user = Optional.of(userRepository.findUser(name));
+
+        return user;
     }
 }

@@ -1,10 +1,12 @@
 package com.sb.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name="USER")
-public class User {
+public class User implements Serializable {
+    private static final long serialVersionUID = -5652649716039775051L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +18,10 @@ public class User {
 
     @Column(name = "AGE",nullable = false)
     private Integer age;
+
+    public User (){
+
+    }
 
     public User (String name, int age){
         this.name = name;
