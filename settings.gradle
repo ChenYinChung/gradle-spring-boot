@@ -1,2 +1,2 @@
 
-include 'test-service','test-db-migration'
+include 'sample-service','sample-db-migration'

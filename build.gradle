@@ -58,6 +58,6 @@ configure(subprojects.findAll { it.name.endsWith('-service') }) {
 
 
 
-project(':test-service'){
+project(':sample-service'){
 
 }
