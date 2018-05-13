@@ -13,7 +13,8 @@
 
 以下是所需啟動的Server
 * mysql 8
-* kafka 2.12(include zookeeper inside) <- docker
+* zookeeper inside <-docker
+* kafka 2.12 本地安裝
 * elasticsearch 6 <-docker latest
 * kibana  <- docker latest
 * redis <- docker latest
@@ -27,5 +28,11 @@ run in command mode , needs install gradle 4.7 version above
     -> ./gradlew -Penv=sit flywayInfo
 
 * run WebApplication for startup application
-
-  java -jar test-service-1.0.jar -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:+UseParallelGC  -XX:MaxGCPauseMillis=100 -XX:+UseAdaptiveSizePolicy
+  * start docker-compose up -d
+    -> startup elstaicsearch , kibana , zookeeper , redis 
+  
+  *  start up kafka with cli
+  
+     <KAFKA_HOME>/bin> ./kafka-server-startup.sh ../config/server.properties
+     
+  * java -jar test-service-1.0.jar -Xmx3550m -Xms3550m -Xmn2g -Xss128k -XX:+UseParallelGC  -XX:MaxGCPauseMillis=100 -XX:+UseAdaptiveSizePolicy
