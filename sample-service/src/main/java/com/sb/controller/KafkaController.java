@@ -1,12 +1,13 @@
 package com.sb.controller;
 
-        import org.slf4j.Logger;
-        import org.slf4j.LoggerFactory;
-        import org.springframework.beans.factory.annotation.Autowired;
-        import org.springframework.kafka.core.KafkaTemplate;
-        import org.springframework.web.bind.annotation.*;
-        import javax.servlet.http.HttpServletRequest;
-        import javax.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 @RestController
@@ -15,7 +16,7 @@ public class KafkaController {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private KafkaTemplate<String,String> kafkaTemplate;
+    private KafkaTemplate<String, String> kafkaTemplate;
 
     @RequestMapping(value = "/send", method = RequestMethod.GET)
     public String sendKafka(HttpServletRequest request, HttpServletResponse response) {

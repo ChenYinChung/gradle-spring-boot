@@ -14,6 +14,7 @@ public class RedisService {
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+
     @Autowired
     RedisTemplate<String, Object> redisTemplate;
 

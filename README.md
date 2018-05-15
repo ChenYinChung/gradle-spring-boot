@@ -9,6 +9,8 @@
  
 
 ## Requirements
+* docker
+* docker-compose
 * jdk 10
 
 以下是所需啟動的Server
