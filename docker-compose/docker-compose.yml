@@ -2,15 +2,22 @@ version: '3'
 
 services:
 
-  elk:
-    container_name: elk
-    image: sebp/elk:latest
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch
     ports:
       - 9200:9200
       - 9300:9300
+    volumes:
+      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+
+  kibana:
+    container_name: kibana
+    image: kibana
+    ports:
       - 5601:5601
-      - 5044:5044
-      - 4560:4560
+    depends_on:
+      - elasticsearch
 
   redis:
     container_name: redis

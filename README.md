@@ -1,5 +1,5 @@
 ##Purpose
- 測試spring boot framework ,miro service 以RESTful為基礎, kafka傳送及接收
+ 測試spring boot framework ,miro service 以RESTful為基礎, kafka傳送及接收,elasticsearch & kibana
  
  * config - 環境先前設定，kafka producer/consumer
  * controller - micro service 
@@ -12,6 +12,11 @@
 * docker
 * docker-compose
 * jdk 10
+* 在docker-compose目錄,elasticsearch.yml 
+     
+     修改 network.publish_host: 192.168.1.104 改為電腦對應ip
+     
+     discovery.zen.ping.unicast.hosts: ["192.168.1.104"]
 
 以下是所需啟動的Server
 * mysql 8
