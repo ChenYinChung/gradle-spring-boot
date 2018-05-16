@@ -35,24 +35,27 @@ public class BehaviorInterceptor {
     public void doBefore(JoinPoint joinPoint) throws Throwable {
         startTime.set(System.currentTimeMillis());
 
+        StringBuilder sb = new StringBuilder();
 
-        logger.info("Entering in Method :  " + joinPoint.getSignature().getName());
-        logger.info("Class Name :  " + joinPoint.getSignature().getDeclaringTypeName());
-        logger.info("Arguments :  " + Arrays.toString(joinPoint.getArgs()));
-        logger.info("Target class : " + joinPoint.getTarget().getClass().getName());
+        sb.append("Entering in Method :  " + joinPoint.getSignature().getName()).append(System.getProperty("line.separator"));
+        sb.append("Class Name :  " + joinPoint.getSignature().getDeclaringTypeName()).append(System.getProperty("line.separator"));
+        sb.append("Arguments :  " + Arrays.toString(joinPoint.getArgs())).append(System.getProperty("line.separator"));
+        sb.append("Target class : " + joinPoint.getTarget().getClass().getName()).append(System.getProperty("line.separator"));
 
         if (null != request) {
-            logger.info("Start Header Section of request ");
-            logger.info("Method Type : " + request.getMethod());
-            Enumeration headerNames = request.getHeaderNames();
+            sb.append("Start Header Section of request ").append(System.getProperty("line.separator"));
+            sb.append("Method Type : " + request.getMethod()).append(System.getProperty("line.separator"));
+            Enumeration<String> headerNames = request.getHeaderNames();
             while (headerNames.hasMoreElements()) {
-                String headerName = (String)headerNames.nextElement();
+                String headerName = headerNames.nextElement();
                 String headerValue = request.getHeader(headerName);
-                logger.info("Header Name: " + headerName + " Header Value : " + headerValue);
+                sb.append("Header Name: " + headerName + " Header Value : " + headerValue).append(System.getProperty("line.separator"));
             }
-            logger.info("Request Path info :" + request.getServletPath());
-            logger.info("End Header Section of request ");
+            sb.append("Request Path info :" + request.getServletPath()).append(System.getProperty("line.separator"));
+            sb.append("End Header Section of request ").append(System.getProperty("line.separator"));
         }
+
+        logger.info(sb.toString());
 
     }
 
