@@ -39,13 +39,13 @@ configure(subprojects.findAll { it.name.endsWith('-service') }) {
 
         compile "org.springframework.boot:spring-boot-starter-actuator:${SpringBbootStarterVersion}"
         compile "org.springframework.boot:spring-boot-starter-web:${SpringBbootStarterVersion}"
+        compile "org.springframework.boot:spring-boot-starter-aop:${SpringBbootStarterVersion}"
         compile "org.springframework.boot:spring-boot-starter-undertow:${SpringBbootStarterVersion}"
         compile "org.springframework.boot:spring-boot-starter-data-jpa:${SpringBbootStarterVersion}"
         compile "org.springframework.boot:spring-boot-starter-data-redis:${SpringBbootStarterVersion}"
         compile "org.springframework.boot:spring-boot-starter-cache:${SpringBbootStarterVersion}"
         compile "org.springframework.boot:spring-boot-starter-test:${SpringBbootStarterVersion}"
         compile "org.springframework.boot:spring-boot-starter-log4j2:${SpringBbootStarterVersion}"
-
 
         compile "org.springframework.kafka:spring-kafka:2.1.5.RELEASE"
         compile "mysql:mysql-connector-java:8.0.11"

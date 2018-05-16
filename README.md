@@ -18,6 +18,8 @@
      
      discovery.zen.ping.unicast.hosts: ["192.168.1.104"]
 
+* create mysql schema test with utf8mb4 and collate utf8mb4_unicode_ci
+
 以下是所需啟動的Server
 * mysql 8
 * zookeeper inside <-docker
