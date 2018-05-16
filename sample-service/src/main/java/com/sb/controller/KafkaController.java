@@ -1,5 +1,6 @@
 package com.sb.controller;
 
+import com.sb.annotation.ExecutionInterval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ public class KafkaController {
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
 
+
+    @ExecutionInterval
     @RequestMapping(value = "/send", method = RequestMethod.GET)
     public String sendKafka(HttpServletRequest request, HttpServletResponse response) {
         try {
