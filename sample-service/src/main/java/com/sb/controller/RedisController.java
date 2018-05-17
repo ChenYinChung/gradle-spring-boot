@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
 
+/**
+ * sammy
+ * 以RestController 為回覆主體
+ */
 @RestController
 @RequestMapping("/redis")
 public class RedisController {
@@ -27,6 +31,9 @@ public class RedisController {
 
     /**
      * http://localhost:8080/redis/set/sammy
+     *
+     * 測試由user service 查詢，寫入redis
+     *
      * @param name
      * @return
      */
@@ -44,6 +51,9 @@ public class RedisController {
 
     /**
      * http://localhost:8080/redis/get/sammy
+     *
+     * redis 讀取人員以Json方式回應
+     *
      * @param name
      * @return
      */

@@ -1,5 +1,6 @@
-package com.sb.annotation;
+package com.sb.config;
 
+import com.sb.annotation.ExecutionInterval;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.method.HandlerMethod;

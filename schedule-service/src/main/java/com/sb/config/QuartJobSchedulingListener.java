@@ -1,34 +1,35 @@
 package com.sb.config;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
-import org.quartz.*;
-
+import com.sb.util.PropertiesUtils;
+import org.quartz.CronTrigger;
+import org.quartz.Job;
+import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
 import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Map;
+import java.util.Set;
+
 
 /**
  * when application startup , auto scan this class and config first
+ *
+ * @Auther: sammy
+ * @Date: 2018/5/17 22:43
+ * @Description:
  */
 public class QuartJobSchedulingListener implements ApplicationListener<ContextRefreshedEvent> {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-    private static final String QUARTZ_PROPERTIES_PATH = "/quartz.properties";
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -99,17 +100,11 @@ public class QuartJobSchedulingListener implements ApplicationListener<ContextRe
     private SchedulerFactoryBean buildSchedulerFactoryBean() throws IOException {
         SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
         schedulerFactoryBean.setAutoStartup(true);
-        schedulerFactoryBean.setQuartzProperties(quartzProperties());
+        schedulerFactoryBean.setQuartzProperties(PropertiesUtils.quartzProperties());
         schedulerFactoryBean.setOverwriteExistingJobs(true);
         return schedulerFactoryBean;
     }
 
 
-    private Properties quartzProperties() throws IOException {
-        PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
-        propertiesFactoryBean.setLocation(new ClassPathResource(QUARTZ_PROPERTIES_PATH));
-        propertiesFactoryBean.afterPropertiesSet();
-        return propertiesFactoryBean.getObject();
-    }
 
 }

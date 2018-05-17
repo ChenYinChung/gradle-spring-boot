@@ -15,6 +15,10 @@ import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import java.util.HashMap;
 import java.util.Map;
 
+
+/**
+ * 設置kafka 消費者
+ */
 @Configuration
 @EnableKafka
 public class KafkaConsumerConfig {
@@ -61,6 +65,10 @@ public class KafkaConsumerConfig {
         return propsMap;
     }
 
+    /**
+     * for autowired
+     * @return
+     */
     @Bean
     public KafkaConsumerListener listener() {
         return new KafkaConsumerListener();

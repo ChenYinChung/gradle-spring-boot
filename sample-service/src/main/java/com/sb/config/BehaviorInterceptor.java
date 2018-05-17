@@ -13,6 +13,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Enumeration;
 
+/**
+ * @Auther: sammy
+ *
+ * AOP 攔截所有controller 的 Request 紀錄傳輸資訊
+ *
+ */
 @Aspect
 @Component
 public class BehaviorInterceptor {

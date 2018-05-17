@@ -7,6 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 
+/**
+ * 監聽kafka topic訊息
+ *
+ */
 public class KafkaConsumerListener {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 

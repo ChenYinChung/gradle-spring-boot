@@ -4,7 +4,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Created by zhuzs on 2017/5/12.
+ * @Auther: sammy
+ * @Date: 2018/5/17 22:43
+ * @Description:
  */
 @Configuration
 public class ListenerConfig {

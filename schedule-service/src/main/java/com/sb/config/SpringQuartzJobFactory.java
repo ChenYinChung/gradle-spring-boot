@@ -9,14 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.quartz.SpringBeanJobFactory;
 
-public class SpringQuartzJobFactory extends SpringBeanJobFactory
-{
+/**
+ * @Auther: sammy
+ * @Description:
+ */
+public class SpringQuartzJobFactory extends SpringBeanJobFactory {
     @Autowired
     private ApplicationContext ctx;
 
     @Override
-    protected Object createJobInstance(TriggerFiredBundle bundle) throws Exception
-    {
+    protected Object createJobInstance(TriggerFiredBundle bundle) throws Exception {
         @SuppressWarnings("unchecked")
         Job job = ctx.getBean(bundle.getJobDetail().getJobClass());
         BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(job);
