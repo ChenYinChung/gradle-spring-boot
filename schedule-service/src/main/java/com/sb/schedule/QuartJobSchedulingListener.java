@@ -23,12 +23,12 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 
+/**
+ * when application startup , auto scan this class and config first
+ */
 public class QuartJobSchedulingListener implements ApplicationListener<ContextRefreshedEvent> {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private static final String QUARTZ_PROPERTIES_PATH = "/quartz.properties";
-//    @Autowired
-//    private Scheduler scheduler;
-
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -112,14 +112,4 @@ public class QuartJobSchedulingListener implements ApplicationListener<ContextRe
         return propertiesFactoryBean.getObject();
     }
 
-
-//    protected void scheduleJobs(JobDetail jobDetail, Trigger trigger) {
-//
-//        try {
-//
-//            scheduler.scheduleJob(jobDetail, trigger);
-//        } catch (SchedulerException e) {
-//            logger.error("Scheduler Job error", e);
-//        }
-//    }
 }
