@@ -1,99 +1,125 @@
 package com.sb.schedule;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
-import org.quartz.Job;
+import org.quartz.*;
 
-import org.quartz.Scheduler;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
 import org.springframework.scheduling.quartz.JobDetailFactoryBean;
+import org.springframework.scheduling.quartz.QuartzJobBean;
+import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
-public class QuartJobSchedulingListener implements ApplicationListener<ContextRefreshedEvent>
-{
-    @Autowired
-    private Scheduler scheduler;
+
+public class QuartJobSchedulingListener implements ApplicationListener<ContextRefreshedEvent> {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private static final String QUARTZ_PROPERTIES_PATH = "/quartz.properties";
+//    @Autowired
+//    private Scheduler scheduler;
+
 
     @Override
-    public void onApplicationEvent(ContextRefreshedEvent event)
-    {
-        try
-        {
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        try {
             ApplicationContext applicationContext = event.getApplicationContext();
-            List<CronTriggerFactoryBean> cronTriggerBeans = this.loadCronTriggerBeans(applicationContext);
-            this.scheduleJobs(cronTriggerBeans);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
+            loadAndRunQuartzJob(applicationContext);
+        } catch (Exception e) {
+            logger.error("startup error",e);
+            System.exit(0);
         }
     }
 
-    private List<CronTriggerFactoryBean> loadCronTriggerBeans(ApplicationContext applicationContext)
-    {
+    private void loadAndRunQuartzJob(ApplicationContext applicationContext) throws Exception {
+
         Map<String, Object> quartzJobBeans = applicationContext.getBeansWithAnnotation(QuartzJob.class);
         Set<String> beanNames = quartzJobBeans.keySet();
-        List<CronTriggerFactoryBean> cronTriggerBeans = new ArrayList<>();
-        for (String beanName : beanNames)
-        {
-            CronTriggerFactoryBean cronTriggerBean = null;
-            Object object = quartzJobBeans.get(beanName);
-            System.out.println(object);
-            try {
-                cronTriggerBean = this.buildCronTriggerBean(object);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        SchedulerFactoryBean schedulerFactoryBean =  buildSchedulerFactoryBean();
+        schedulerFactoryBean.afterPropertiesSet();
 
-            if(cronTriggerBean != null)
-            {
-                cronTriggerBeans.add(cronTriggerBean);
+        beanNames.forEach(t -> {
+            QuartzJobBean job = (QuartzJobBean) quartzJobBeans.get(t);
+            if (Job.class.isAssignableFrom(job.getClass())) {
+                try {
+                    CronTriggerFactoryBean cronTriggerFactoryBean = buildCronTriggerFactoryBean(job);
+                    JobDetailFactoryBean jobDetailFactoryBean = buidlJobDetailFactoryBean(job);
+                    jobDetailFactoryBean.setApplicationContext(applicationContext);
+                    jobDetailFactoryBean.afterPropertiesSet();
+
+                    cronTriggerFactoryBean.setJobDetail(jobDetailFactoryBean.getObject());
+                    cronTriggerFactoryBean.afterPropertiesSet();
+
+                    if(!schedulerFactoryBean.getObject().checkExists(jobDetailFactoryBean.getObject().getKey())){
+                        schedulerFactoryBean.getObject().scheduleJob(jobDetailFactoryBean.getObject(), cronTriggerFactoryBean.getObject());
+                    }
+
+                    schedulerFactoryBean.getObject().start();
+                } catch (ParseException |SchedulerException pe) {
+                    logger.error("CronTriggerFactoryBean error",pe);
+                }
+
             }
-        }
-        return cronTriggerBeans;
+        });
     }
 
-    public CronTriggerFactoryBean buildCronTriggerBean(Object job) throws Exception
-    {
-        CronTriggerFactoryBean cronTriggerBean = null;
+
+    private CronTriggerFactoryBean buildCronTriggerFactoryBean(QuartzJobBean job) {
+
+        CronTriggerFactoryBean cronTriggerFactoryBean = null;
         QuartzJob quartzJobAnnotation = AnnotationUtils.findAnnotation(job.getClass(), QuartzJob.class);
-        if(Job.class.isAssignableFrom(job.getClass()))
-        {
-            System.out.println("It is a Quartz Job");
-            cronTriggerBean = new CronTriggerFactoryBean();
-            cronTriggerBean.setCronExpression(quartzJobAnnotation.cronExp());
-            cronTriggerBean.setName(quartzJobAnnotation.name()+"_trigger");
-            JobDetailFactoryBean jobDetail = new JobDetailFactoryBean();
-            jobDetail.setName(quartzJobAnnotation.name());
-            jobDetail.setJobClass(((Job)job).getClass());
-
-            System.out.println("stop");
-//            cronTriggerBean.setJobDetail(jobDetail);
-        }
-        else
-        {
-            throw new RuntimeException(job.getClass()+" doesn't implemented "+Job.class);
-        }
-        return cronTriggerBean;
+        cronTriggerFactoryBean = new CronTriggerFactoryBean();
+        cronTriggerFactoryBean.setCronExpression(quartzJobAnnotation.cronExp());
+        cronTriggerFactoryBean.setName(quartzJobAnnotation.name() + "_trigger");
+        cronTriggerFactoryBean.setMisfireInstruction(CronTrigger.MISFIRE_INSTRUCTION_FIRE_ONCE_NOW);
+        return cronTriggerFactoryBean;
     }
 
-    protected void scheduleJobs(List<CronTriggerFactoryBean> cronTriggerBeans)
-    {
-        for (CronTriggerFactoryBean cronTriggerBean : cronTriggerBeans) {
+    private JobDetailFactoryBean buidlJobDetailFactoryBean(QuartzJobBean job) {
+        QuartzJob quartzJobAnnotation = AnnotationUtils.findAnnotation(job.getClass(), QuartzJob.class);
+        JobDetailFactoryBean jobDetailFactoryBean = new JobDetailFactoryBean();
+        jobDetailFactoryBean.setName(quartzJobAnnotation.name());
+        jobDetailFactoryBean.setJobClass(job.getClass());
+        jobDetailFactoryBean.setDurability(true);
+        jobDetailFactoryBean.setBeanName(job.getClass().getName());
 
-            System.out.println("stop");
-//            JobDetail jobDetail = cronTriggerBean.getJobDetail();
-//            try {
-//                scheduler.scheduleJob(jobDetail, cronTriggerBean);
-//            } catch (SchedulerException e) {
-//                e.printStackTrace();
-//            }
-        }
+        return jobDetailFactoryBean;
     }
+
+    private SchedulerFactoryBean buildSchedulerFactoryBean() throws IOException {
+        SchedulerFactoryBean schedulerFactoryBean = new SchedulerFactoryBean();
+        schedulerFactoryBean.setAutoStartup(true);
+        schedulerFactoryBean.setQuartzProperties(quartzProperties());
+        schedulerFactoryBean.setOverwriteExistingJobs(true);
+        return schedulerFactoryBean;
+    }
+
+
+    private Properties quartzProperties() throws IOException {
+        PropertiesFactoryBean propertiesFactoryBean = new PropertiesFactoryBean();
+        propertiesFactoryBean.setLocation(new ClassPathResource(QUARTZ_PROPERTIES_PATH));
+        propertiesFactoryBean.afterPropertiesSet();
+        return propertiesFactoryBean.getObject();
+    }
+
+
+//    protected void scheduleJobs(JobDetail jobDetail, Trigger trigger) {
+//
+//        try {
+//
+//            scheduler.scheduleJob(jobDetail, trigger);
+//        } catch (SchedulerException e) {
+//            logger.error("Scheduler Job error", e);
+//        }
+//    }
 }

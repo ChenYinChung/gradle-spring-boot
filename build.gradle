@@ -5,7 +5,6 @@ buildscript {
 
 }
 
-
 ext {
     SpringBbootStarterVersion= "2.0.2.RELEASE"
 }
@@ -58,7 +57,6 @@ project(':sample-service'){
         compile "org.hibernate:hibernate-core:5.3.0.CR2"
         compile "org.hibernate:hibernate-entitymanager:5.3.0.CR2"
         compile "javax.xml.bind:jaxb-api:2.3.0"
-
     }
 }
 
@@ -75,8 +73,8 @@ project(':schedule-service'){
         compile "org.springframework.boot:spring-boot-starter-quartz:${SpringBbootStarterVersion}"
         compile "org.springframework.boot:spring-boot-starter-log4j2:${SpringBbootStarterVersion}"
 
-//        compile group: 'org.springframework', name: 'spring-context-support', version: '5.0.6.RELEASE'
+        compile "c3p0:c3p0:0.9.1.2"
+        compile "mysql:mysql-connector-java:8.0.11"
 
-//        compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.0'
     }
 }

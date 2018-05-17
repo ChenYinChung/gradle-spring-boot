@@ -9,8 +9,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
-@ComponentScan(basePackages = { "com.sb.schedule" })
-@PropertySource({"classpath:application.properties","classpath:jdbc.properties"})
+//@ComponentScan(basePackages = { "com.sb.schedule" })
+//@PropertySource({"classpath:application.properties", "classpath:quartz.properties"})
 public class ScheduleApplication {
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
 

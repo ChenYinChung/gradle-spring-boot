@@ -19,13 +19,6 @@
             <DefaultRolloverStrategy max="30"/>
         </RollingFile>
 
-        <socket name="logstash" host="localhost" port="4560" protocol="tcp">
-            <LogStashJSONLayout>
-                <PatternLayout pattern="%m%n"/>
-            </LogStashJSONLayout>
-        </socket>
-
-
         <Console name="STDOUT" target="SYSTEM_OUT">
             <PatternLayout pattern="${pattern}"/>
         </Console>
@@ -37,7 +30,6 @@
         <Root level="INFO">
             <AppenderRef ref="STDOUT"/>
             <AppenderRef ref="R"/>
-            <AppenderRef ref="logstash"/>
         </Root>
     </Loggers>
 </Configuration>
