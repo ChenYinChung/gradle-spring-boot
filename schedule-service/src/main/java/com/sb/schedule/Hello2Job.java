@@ -1,5 +1,6 @@
 package com.sb.schedule;
 
+import com.sb.config.QuartzJob;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;

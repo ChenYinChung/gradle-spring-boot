@@ -1,4 +1,4 @@
-package com.sb.schedule;
+package com.sb.config;
 
 import java.io.IOException;
 import java.text.ParseException;

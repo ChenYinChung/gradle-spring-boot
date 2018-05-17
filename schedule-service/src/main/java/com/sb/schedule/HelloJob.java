@@ -2,6 +2,7 @@ package com.sb.schedule;
 
 import java.util.Date;
 
+import com.sb.config.QuartzJob;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 

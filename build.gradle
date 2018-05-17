@@ -72,6 +72,8 @@ project(':schedule-service'){
         compile "org.springframework.boot:spring-boot-starter-web:${SpringBbootStarterVersion}"
         compile "org.springframework.boot:spring-boot-starter-quartz:${SpringBbootStarterVersion}"
         compile "org.springframework.boot:spring-boot-starter-log4j2:${SpringBbootStarterVersion}"
+        compile "org.springframework.boot:spring-boot-starter-data-rest:${SpringBbootStarterVersion}"
+
 
         compile "c3p0:c3p0:0.9.1.2"
         compile "mysql:mysql-connector-java:8.0.11"
