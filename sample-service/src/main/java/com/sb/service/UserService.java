@@ -1,6 +1,7 @@
 package com.sb.service;
 
 import com.sb.annotation.ExecutionInterval;
+import com.sb.config.ElasticSearch;
 import com.sb.model.User;
 import com.sb.repository.UserRepository;
 import org.slf4j.Logger;
@@ -22,6 +23,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    ElasticSearch elasticSearch;
 
     @ExecutionInterval
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)

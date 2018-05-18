@@ -50,6 +50,7 @@ project(':sample-service'){
         compile "org.springframework.boot:spring-boot-starter-cache:${SpringBbootStarterVersion}"
         compile "org.springframework.boot:spring-boot-starter-test:${SpringBbootStarterVersion}"
         compile "org.springframework.boot:spring-boot-starter-log4j2:${SpringBbootStarterVersion}"
+        compile "org.springframework.boot:spring-boot-starter-data-rest:${SpringBbootStarterVersion}"
 
         compile "org.springframework.kafka:spring-kafka:2.1.5.RELEASE"
         compile "mysql:mysql-connector-java:8.0.11"
@@ -59,9 +60,9 @@ project(':sample-service'){
         compile "javax.xml.bind:jaxb-api:2.3.0"
 
 //        compile "org.springframework.boot:spring-boot-starter-data-elasticsearch:${SpringBbootStarterVersion}"
-//        compile "org.elasticsearch.client:transport:6.1.4"
-//        compile "org.elasticsearch:elasticsearch:6.1.4"
-//        compile "com.google.code.gson:gson:2.8.4"
+//        compile "org.elasticsearch.client:transport:5.5.1"
+//        compile "org.elasticsearch:elasticsearch:5.5.1"
+        compile "com.google.code.gson:gson:2.8.4"
 
 
     }

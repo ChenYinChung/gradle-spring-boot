@@ -101,7 +101,7 @@ public class UserJob extends QuartzJobBean {
         HttpHeaders headers = new HttpHeaders();
         MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
         headers.setContentType(type);
-        HttpEntity<String> entity = new HttpEntity<String>(json, headers);
+        HttpEntity<String> entity = new HttpEntity<>(json, headers);
         String result = restTemplate.postForObject(url, entity, String.class);
 
         logger.info("User post[{}] result[{}]", url, result);
