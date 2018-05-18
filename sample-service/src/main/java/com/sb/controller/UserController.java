@@ -32,7 +32,7 @@ public class UserController {
 
     @RequestMapping(value = "/add/{name}/{age}", method = RequestMethod.GET)
     @ExecutionInterval
-    public String addUser(@PathVariable("name") String name, @PathVariable("age") int age) throws Exception {
+    public String add(@PathVariable("name") String name, @PathVariable("age") int age) throws Exception {
         logger.info("add {} , {}", name, age);
 //        try {
             userService.addUser(name, age);
@@ -54,7 +54,7 @@ public class UserController {
      */
     @Cacheable(value = "user-cache", key = "#name")
     @RequestMapping(value = "/find/{name}", method = RequestMethod.GET)
-    public User findUser(@PathVariable("name") String name) {
+    public User find(@PathVariable("name") String name) {
         logger.info("if show is line , not from cache [{}]",name);
         Optional<User> userOption=   userService.findUser(name);
 
@@ -68,7 +68,7 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/login", method = { RequestMethod.POST})
-    public User loginByPost2(@RequestBody User user) {
+    public User login(@RequestBody User user) {
 
         Optional<User> userOption=   userService.findUser(user.getName());
 
@@ -76,8 +76,21 @@ public class UserController {
     }
 
 
+    /**
+     * http://localhost:8080/user/deltet
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/delete/{name}", method = { RequestMethod.DELETE})
+    public void delete(@PathVariable("name") String name) {
+
+        userService.deleteUser(name);
+    }
+
     @ExceptionHandler(Exception.class)
     public String notFoundException(final Exception e) {
-        return "Exception occures";
+        return "Exception occures"+e;
     }
+
+
 }

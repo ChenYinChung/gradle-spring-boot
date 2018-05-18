@@ -45,4 +45,18 @@ public class UserService {
 
         return user;
     }
+
+    /**
+     * find by redis cache
+     *
+     * @param name
+     * @return
+     */
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void deleteUser(String name) {
+        User user = userRepository.findUser(name);
+        userRepository.delete(user);
+    }
+
+
 }

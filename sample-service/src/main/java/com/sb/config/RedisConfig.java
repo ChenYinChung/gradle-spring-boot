@@ -9,6 +9,12 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 
+/**
+ * Redis 當Cache 使用
+ * 在 WebApplication 的 EnableCaching
+ * UserController @Cacheable(value = "user-cache", key = "#name")
+ * 都是使用Redis Cache
+ */
 @Configuration
 public class RedisConfig {
 

@@ -18,7 +18,7 @@ import java.util.Date;
  * @Date: 2018/5/17 22:43
  * @Description:
  */
-@QuartzJob(name = "KafkaJob", cronExp = "0/5 * * * * ?")
+@QuartzJob(name = "KafkaJob", cronExp = "0/30 * * * * ?")
 public class KafkaJob extends QuartzJobBean {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
