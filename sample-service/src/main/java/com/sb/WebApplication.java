@@ -11,7 +11,7 @@ import org.springframework.context.annotation.PropertySource;
 @SpringBootApplication
 @ComponentScan(basePackages = { "com.sb" })
 @PropertySource({"classpath:application.properties","classpath:kafka.properties","classpath:undertow.properties",
-        "classpath:jdbc.properties","redis.properties"})
+        "classpath:jdbc.properties","classpath:redis.properties"})
 
 @EnableCaching
 public class WebApplication {

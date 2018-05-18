@@ -37,6 +37,8 @@ public class BehaviorInterceptor {
     @Pointcut("execution(public * com.sb.controller..*.*(..))")
     public void behaviroLog(){}
 
+
+
     @Before("behaviroLog()")
     public void doBefore(JoinPoint joinPoint) throws Throwable {
         startTime.set(System.currentTimeMillis());
@@ -62,7 +64,6 @@ public class BehaviorInterceptor {
         }
 
         logger.info(sb.toString());
-
     }
 
     @AfterReturning(returning = "ret", pointcut = "behaviroLog()")
