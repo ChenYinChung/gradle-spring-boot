@@ -10,8 +10,8 @@ import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
 @ComponentScan(basePackages = { "com.sb" })
-@PropertySource({"classpath:application.properties","classpath:kafka.properties","classpath:undertow.properties",
-        "classpath:jdbc.properties","classpath:redis.properties","classpath:elasticsearch.properties"})
+@PropertySource({"application.properties","kafka.properties","undertow.properties",
+        "jdbc.properties","redis.properties","elasticsearch.properties"})
 
 @EnableCaching
 public class WebApplication {
@@ -22,5 +22,7 @@ public class WebApplication {
     public static void main(String args[]){
         //執行SpringApplication
         SpringApplication.run(WebApplication.class, args);
+
     }
+
 }

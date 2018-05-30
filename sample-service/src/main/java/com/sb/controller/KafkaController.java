@@ -1,7 +1,6 @@
 package com.sb.controller;
 
 import com.sb.annotation.ExecutionInterval;
-import com.sb.config.ElasticSearch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +23,6 @@ public class KafkaController {
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
-
-    @Autowired
-    private ElasticSearch elasticSearch;
 
     @ExecutionInterval
     @RequestMapping(value = "/send", method = RequestMethod.GET)

@@ -1,8 +1,11 @@
 package com.sb.controller;
 
 import com.sb.annotation.ExecutionInterval;
+import com.sb.component.ElasticSearchComponent;
+import com.sb.domain.ESDomain;
 import com.sb.model.User;
 import com.sb.service.UserService;
+import io.searchbox.client.JestResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,9 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    ElasticSearchComponent elasticSearchComponent;
 
     /**
      * http://localhost:8080/user/add/sammy/40
@@ -89,8 +95,22 @@ public class UserController {
 
     @ExceptionHandler(Exception.class)
     public String notFoundException(final Exception e) {
+
+        sendES(e);
         return "Exception occures"+e;
     }
 
+    /**
+     *  Send to Elastic Search
+     * @param e
+     */
+    private void sendES(Exception e){
+        Optional<JestResult> jestResult = elasticSearchComponent.indicesExists(ESDomain.error.name());
+        if(jestResult.isPresent() && !jestResult.get().isSucceeded()){
+            elasticSearchComponent.createIndex(e,ESDomain.error.name(),ESDomain.error.name());
+        }
 
+        elasticSearchComponent.bulkIndex(ESDomain.error.name(),ESDomain.error.name(),e);
+
+    }
 }
