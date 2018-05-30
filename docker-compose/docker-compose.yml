@@ -40,6 +40,8 @@ services:
     image: zookeeper
     ports:
       - 2181:2181
+    networks:
+      - zk
 
   kafka:
     container_name: kafka
@@ -54,6 +56,8 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - zk
 
   mysql:
     image: mysql:5.7
@@ -73,4 +77,6 @@ services:
 
 networks:
   elk:
+    driver: bridge
+  zk:
     driver: bridge

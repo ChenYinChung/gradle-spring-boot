@@ -15,7 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -89,12 +94,22 @@ public class ElasticSearchComponent {
     }
 
     public <T> void bulkIndex(String index, String type , T o) {
-        Bulk bulk = new Bulk.Builder().defaultIndex(index).defaultType(type).addAction(Arrays.asList(
-                    new Index.Builder(o).build()
-                )).build();
+
         try {
+
+        Map<String,Object> map = new HashMap<>();
+        InetAddress ip= InetAddress.getLocalHost();
+        String hostname = ip.getHostName();
+
+        map.put("ip",ip.getHostAddress());
+        map.put("hostname",hostname);
+
+        map.put("@timestamp",LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")));
+        Bulk bulk = new Bulk.Builder().defaultIndex(index).defaultType(type).addAction(Arrays.asList(
+                    new Index.Builder(map).build()
+                )).build();
             jestClient.execute(bulk);
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error("jest insert error:",e);
         }
     }
