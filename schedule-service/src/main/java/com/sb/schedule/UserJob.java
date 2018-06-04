@@ -6,6 +6,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -22,6 +23,10 @@ import org.springframework.web.client.RestTemplate;
 public class UserJob extends QuartzJobBean {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    RestTemplate restTemplate;
+
 
     static final String URL_USER_CREATE = "/user/add/";
     static final String URL_USER_LOGIN = "/user/login";
@@ -96,7 +101,6 @@ public class UserJob extends QuartzJobBean {
 
 
     private void post(String url, String json) {
-        RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
         MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
@@ -108,7 +112,6 @@ public class UserJob extends QuartzJobBean {
     }
 
     private void delete(String url ) {
-        RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
         MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");

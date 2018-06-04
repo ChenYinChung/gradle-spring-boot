@@ -24,6 +24,12 @@ public class KafkaController {
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplate;
 
+    /**
+     * ExecutionInterval 執行時間，以logger 列出
+     * @param request
+     * @param response
+     * @return
+     */
     @ExecutionInterval
     @RequestMapping(value = "/send", method = RequestMethod.GET)
     public String sendKafka(HttpServletRequest request, HttpServletResponse response) {
