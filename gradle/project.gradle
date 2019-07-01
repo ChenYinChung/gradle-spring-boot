@@ -49,7 +49,3 @@ allprojects {
     apply plugin: 'idea'
     idea.module.inheritOutputDirs = true
 }
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '4.7'
-}

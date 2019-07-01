@@ -12,27 +12,27 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
-@Configuration
+// @Configuration
 public class RestConfig {
 
-    @Bean
-    @ConfigurationProperties(prefix = "custom.rest.connection")
-    public HttpComponentsClientHttpRequestFactory customHttpRequestFactory() {
-        return new HttpComponentsClientHttpRequestFactory();
-    }
-
-    @Bean
-    public RestTemplate restTemplate(){
-        return new RestTemplate(customHttpRequestFactory());
-    }
-
-//    @Bean
-//    public RestTemplate restTemplate(){
-//        HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
-//        httpRequestFactory.setConnectionRequestTimeout(3000);
-//        httpRequestFactory.setConnectTimeout(3000);
-//        httpRequestFactory.setReadTimeout(3000);
+//     @Bean
+//     @ConfigurationProperties(prefix = "custom.rest.connection")
+//     public HttpComponentsClientHttpRequestFactory customHttpRequestFactory() {
+//         return new HttpComponentsClientHttpRequestFactory();
+//     }
 //
-//        return new RestTemplate(httpRequestFactory);
-//    }
+//     @Bean
+//     public RestTemplate restTemplate(){
+//         return new RestTemplate(customHttpRequestFactory());
+//     }
+//
+// //    @Bean
+// //    public RestTemplate restTemplate(){
+// //        HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+// //        httpRequestFactory.setConnectionRequestTimeout(3000);
+// //        httpRequestFactory.setConnectTimeout(3000);
+// //        httpRequestFactory.setReadTimeout(3000);
+// //
+// //        return new RestTemplate(httpRequestFactory);
+// //    }
 }

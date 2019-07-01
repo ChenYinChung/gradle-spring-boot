@@ -9,7 +9,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import java.util.Date;
 
-@QuartzJob(name = "Hello2Job", cronExp = "0 0/5 * * * ?")
+@QuartzJob(name = "Hello2Job", cronExp = "*/5 * * * * ?")
 public class Hello2Job extends QuartzJobBean {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());

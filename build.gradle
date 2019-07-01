@@ -1,6 +1,6 @@
 buildscript {
     dependencies {
-        classpath files("${rootDir}/lib/mysql-connector-java-5.1.46.jar")
+        classpath files("${rootDir}/lib/postgresql-42.2.2.jar")
     }
 
 }
@@ -84,7 +84,16 @@ project(':schedule-service'){
 
 
         compile "c3p0:c3p0:0.9.1.2"
-        compile "mysql:mysql-connector-java:8.0.11"
+//        compile "mysql:mysql-connector-java:8.0.11"
+
+//        // https://mvnrepository.com/artifact/org.postgresql/postgresql
+//        compile group: 'org.postgresql', name: 'postgresql', version: '42.2.6'
+//// https://mvnrepository.com/artifact/postgresql/postgresql
+//        compile group: 'postgresql', name: 'postgresql', version: '9.1-901-1.jdbc4'
+
+        // https://mvnrepository.com/artifact/org.postgresql/postgresql
+        compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
+
 
     }
 }

@@ -3,22 +3,40 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'org.flywaydb:flyway-gradle-plugin:5.0.7'
+        classpath 'org.flywaydb:flyway-gradle-plugin:6.0.0-beta2'
+        classpath files("${rootDir}/lib/postgresql-42.2.2.jar")
     }
+}
+// 不打包成 jar
+jar {
+    enabled = false
 }
 
 // use gradlew -Penv=${env} to pass
-def env = hasProperty('env') ? env : null
+def env = hasProperty('env') ? env : "local"
 
 apply plugin: org.flywaydb.gradle.FlywayPlugin
 
 tasks.withType(org.flywaydb.gradle.task.AbstractFlywayTask.class) { task ->
     task.doFirst {
         flyway {
-            placeholderReplacement = false
-            assert project.file('src/main/resources/db/migration').exists()
+            placeholderReplacement = true
+            outOfOrder = true
 
-            def flywayProperties = env == null ? 'src/main/resources/flyway.properties' : "conf/${env}/resources/flyway.properties"
+            if(env.contains("local") || env.contains("sit")){
+                cleanDisabled = false
+            }else{
+                cleanDisabled = true
+            }
+
+            if(env == "local"){
+                locations = ["filesystem:../sample-db-migration/src/main/resources/db/migration"]
+            }else{
+                locations = ["filesystem:sample-db-migration/src/main/resources/db/migration"]
+            }
+
+            assert project.file('src/main/resources/db/migration').exists()
+            def flywayProperties = env == "local" ? 'src/main/resources/flyway.properties' : "conf/${env}/resources/flyway.properties"
             assert project.file(flywayProperties).exists()
 
             Properties properties = new Properties()
