@@ -2,34 +2,75 @@ version: '3'
 
 services:
 
-  postresql:
-    container_name: mps_db
-    image: docker.nexiosoft.com:5000/nogle-postgresql
+
+  elasticsearch:
+    container_name: elasticsearch
+    image: elasticsearch
+    volumes:
+      - ./es:/usr/share/elasticsearch/data
+      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
     ports:
-      - 5430:5430
-      - 5432:5432
+      - "9200:9200"
+      - "9300:9300"
     environment:
-      - initdb=true
-    privileged: true
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - elk
+
+  kibana:
+    container_name: kibana
+    image: kibana
+    volumes:
+      - ./kibana/config/:/usr/share/kibana/config:ro
+    ports:
+      - "5601:5601"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
 
   redis:
-    container_name: mps_redis_standalone
-    image: docker.nexiosoft.com:5000/nogle-redis
-    restart: always
-    privileged: true
+    container_name: redis
+    image: redis
     ports:
       - 6379:6379
-      - 6380:6380
-      - 6381:6381
-    environment:
-      - dev_mode=true
 
-  kafka:
-    container_name: mps_kafka_standalone
-    image: docker.nexiosoft.com:5000/spotify/kafka
+  zookeeper:
+    container_name: zookeeper
+    image: zookeeper
     ports:
       - 2181:2181
-      - 9092:9092
+
+  kafka:
+    container_name: kafka
+    image:  wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
     environment:
-      - ADVERTISED_HOST=127.0.0.1
-      - ADVERTISED_PORT=9092
+      KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_CREATE_TOPICS: "test:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    volumes:
+      - ./dbdata:/var/lib/mysql
+    restart: always
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_DATABASE=test
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=secret
+    ports:
+      - "3306:3306"
+
+networks:
+  elk:
+    driver: bridge
